@@ -10,5 +10,6 @@ import socialbookstoreapp.domainmodel.BookAuthor;
 @Repository
 public interface BookAuthorMapper extends JpaRepository<BookAuthor, Integer>{
 
-	List<BookAuthor> findByName(String name);
+	BookAuthor findByName(String name);
+	List<BookAuthor> findAllByName(String name);
 }

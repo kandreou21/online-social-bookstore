@@ -2,8 +2,10 @@ package socialbookstoreapp.domainmodel;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +18,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="books")
 public class Book {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
@@ -25,20 +26,23 @@ public class Book {
 	@Column(name="title")
 	private String title;
 	
-	@ManyToMany
+	@Column(name="summary")
+	private String summary;
+	
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(
 			name = "book_write", 
 			joinColumns = @JoinColumn(name="book_id"), 
 			inverseJoinColumns = @JoinColumn(name="book_author_id"))
 	private List<BookAuthor> bookAuthors;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="book_category_id")
 	private BookCategory bookCategory;
 	
-	@ManyToMany(mappedBy="requestedBooks")
+	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="requestedBooks")
 	private List<UserProfile> requestingUsers;
-
+	
 	public int getBookId() {
 		return bookId;
 	}
@@ -53,6 +57,14 @@ public class Book {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	public List<BookAuthor> getBookAuthors() {
@@ -79,4 +91,9 @@ public class Book {
 		this.requestingUsers = requestingUsers;
 	}
 
+	@Override
+	public String toString() {
+		return "Book [bookId=" + bookId + ", title=" + title + ", bookAuthors=" + bookAuthors + ", bookCategory="
+				+ bookCategory + ", requestingUsers=" + requestingUsers + "]";
+	}
 }

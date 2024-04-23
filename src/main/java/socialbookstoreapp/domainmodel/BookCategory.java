@@ -15,13 +15,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="book_categories")
 public class BookCategory {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int categoryId;
 	
-	@Column(name="name")
+	@Column(name="name", unique=true)
 	private String name;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="bookCategory")
@@ -51,4 +50,8 @@ public class BookCategory {
 		this.books = books;
 	}
 
+	@Override
+	public String toString() {
+		return "BookCategory [categoryId=" + categoryId + ", name=" + name + ", books=" + books + "]";
+	}
 }

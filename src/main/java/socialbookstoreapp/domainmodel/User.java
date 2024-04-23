@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name="users")
 public class User implements UserDetails{
-	
 	@Id
 	@Column(name="user_name")
 	private String username;

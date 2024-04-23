@@ -41,12 +41,12 @@ public class AuthController {
         }
         
         userService.saveUser(user);
-        /*
         if (user.getRole() == Role.USER) {
-        	UserProfileFormData userProfileFormData = new UserProfileFormData(user.getUsername());
-        	UserProfileService.save(userProfileFormData);
+        	UserProfileFormData userProfileFormData = new UserProfileFormData();
+        	userProfileFormData.setUsername(user.getUsername());
+        	userProfileService.save(userProfileFormData);
         }
-        */
+
         model.addAttribute("successMessage", "User registered successfully!");
 
         return "auth/signin";

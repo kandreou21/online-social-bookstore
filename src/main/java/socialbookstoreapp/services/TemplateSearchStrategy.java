@@ -13,13 +13,12 @@ import socialbookstoreapp.mappers.BookMapper;
 @Component
 public abstract class TemplateSearchStrategy implements SearchStrategy {
 	@Autowired 
-	BookMapper bookMapper;
+	protected BookMapper bookMapper;
 	
 	public List<BookFormData> search(SearchFormData searchFormData, BookMapper bookMapper){
 		return null;
 	}
 	
-	public abstract List<Book> makeInitialListOfBooks(SearchFormData searchDto);
-	
-	public abstract boolean checkIfAuthorsMatch(SearchFormData searchFormData, Book book);
+	protected abstract List<Book> makeInitialListOfBooks(SearchFormData searchDto);
+	protected abstract boolean checkIfAuthorsMatch(SearchFormData searchFormData, Book book);
 }

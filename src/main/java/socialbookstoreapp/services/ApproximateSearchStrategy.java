@@ -11,13 +11,13 @@ import socialbookstoreapp.formsdata.SearchFormData;
 public class ApproximateSearchStrategy extends TemplateSearchStrategy {
 
 	@Override
-	public List<Book> makeInitialListOfBooks(SearchFormData searchDto) {
+	protected List<Book> makeInitialListOfBooks(SearchFormData searchDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean checkIfAuthorsMatch(SearchFormData searchFormData, Book book) {
+	protected boolean checkIfAuthorsMatch(SearchFormData searchFormData, Book book) {
 		// TODO Auto-generated method stub
 		return false;
 	}
