@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import socialbookstoreapp.formsdata.BookFormData;
-import socialbookstoreapp.formsdata.RecommendationsFormData;
+import socialbookstoreapp.formsdata.RecommendationFormData;
 import socialbookstoreapp.formsdata.SearchFormData;
 import socialbookstoreapp.formsdata.UserProfileFormData;
 
@@ -16,7 +16,7 @@ public interface UserProfileService {
 	public List<BookFormData> retrieveBookOffers(String username);
 	public void addBookOffer(String username, BookFormData bookFormData);
 	public List<BookFormData> searchBooks(SearchFormData searchFormData);
-	public List<BookFormData> recommendBooks(String username, RecommendationsFormData recomFormData);
+	public List<BookFormData> recommendBooks(String username, RecommendationFormData recomFormData);
 	public void requestBook(int bookId, String username);
 	public List<BookFormData> retrieveBookRequests(String username);
 	public List<UserProfileFormData> retrieveRequestingUsers(int bookld);

@@ -17,7 +17,7 @@ import socialbookstoreapp.domainmodel.BookAuthor;
 import socialbookstoreapp.domainmodel.BookCategory;
 import socialbookstoreapp.domainmodel.UserProfile;
 import socialbookstoreapp.formsdata.BookFormData;
-import socialbookstoreapp.formsdata.RecommendationsFormData;
+import socialbookstoreapp.formsdata.RecommendationFormData;
 import socialbookstoreapp.formsdata.SearchFormData;
 import socialbookstoreapp.formsdata.UserProfileFormData;
 import socialbookstoreapp.services.UserProfileService;
@@ -127,22 +127,37 @@ public class UserProfileController {
 		return "redirect:/user/listBookOffers";
 	}
 	
+	@RequestMapping("/showSearchForm")
 	public String showSearchForm(Model model) {
-		return null;
+		SearchFormData searchDTO = new SearchFormData();
+		
+		model.addAttribute("searchDTO", searchDTO);
+		return "user/search-form";
 	}
 	
-	public String search(SearchFormData searchFormData, Model model) {
-		return null;
+	@RequestMapping("/search")
+	public String search(@ModelAttribute("searchDTO") SearchFormData searchFormData, 
+							@RequestParam("authors") String authors,
+							Model model) {
+		searchFormData.setBookAuthors(Arrays.asList(authors.split("\\s*,\\s*")));
+		List<BookFormData> bookResults = userProfileService.searchBooks(searchFormData);
+		model.addAttribute("bookResults", bookResults);
+		return "/user/list-search-results";
 	}
 	
+	@RequestMapping("/showRecommendationForm")
 	public String showRecommendationsForm(Model model) {
-		return null;
+		RecommendationFormData recommendationDTO = new RecommendationFormData();
+		
+		model.addAttribute("recommendationDTO", recommendationDTO);
+		return "user/recommendations-form";
 	}
 	
-	public String recommendBooks(RecommendationsFormData recomFormData, Model model) {
-		return null;
+	@RequestMapping("/recommendBooks")
+	public String recommendBooks(@ModelAttribute("recommendationDTO") RecommendationFormData recomFormData, Model model) {
+		return "redirect:/user/dashboard";
 	}
-
+	
 	public String requestBook(int bookId, Model model) {
 		return null;
 	}

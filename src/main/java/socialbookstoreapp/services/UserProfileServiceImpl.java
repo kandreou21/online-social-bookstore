@@ -14,7 +14,7 @@ import socialbookstoreapp.domainmodel.BookAuthor;
 import socialbookstoreapp.domainmodel.BookCategory;
 import socialbookstoreapp.domainmodel.UserProfile;
 import socialbookstoreapp.formsdata.BookFormData;
-import socialbookstoreapp.formsdata.RecommendationsFormData;
+import socialbookstoreapp.formsdata.RecommendationFormData;
 import socialbookstoreapp.formsdata.SearchFormData;
 import socialbookstoreapp.formsdata.UserProfileFormData;
 import socialbookstoreapp.mappers.BookAuthorMapper;
@@ -180,12 +180,12 @@ public class UserProfileServiceImpl implements UserProfileService {
 	
 	@Override
 	public List<BookFormData> searchBooks(SearchFormData searchFormData) {
-		// TODO Auto-generated method stub
-		return null;
+		SearchStrategy searchStrategy = searchStrategyFactory.getSearchStrategy(searchFormData.getSearchStrategy());
+		return searchStrategy.search(searchFormData, bookMapper);
 	}
 
 	@Override
-	public List<BookFormData> recommendBooks(String username, RecommendationsFormData recomFormData) {
+	public List<BookFormData> recommendBooks(String username, RecommendationFormData recomFormData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -210,12 +210,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 	@Override
 	public void deleteBookOffer(String username, int bookId) {
-		UserProfile userProfile = userProfileMapper.findByUsername(username);
-		//Book bookOffer = bookMapper.findById(bookId).get();
-		
-		//userProfile.deleteBookOffer(bookOffer);
 		bookMapper.deleteById(bookId);
-		//userProfileMapper.save(userProfile);
 	}
 
 	@Override
