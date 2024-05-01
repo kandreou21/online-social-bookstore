@@ -15,20 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import socialbookstoreapp.domainmodel.BookAuthor;
 import socialbookstoreapp.domainmodel.BookCategory;
-import socialbookstoreapp.domainmodel.UserProfile;
 import socialbookstoreapp.formsdata.BookFormData;
 import socialbookstoreapp.formsdata.RecommendationFormData;
 import socialbookstoreapp.formsdata.SearchFormData;
 import socialbookstoreapp.formsdata.UserProfileFormData;
 import socialbookstoreapp.services.UserProfileService;
-import socialbookstoreapp.services.UserService;
 
 @Controller
 @RequestMapping("/user")
 public class UserProfileController {
-	@Autowired
-	private UserService userService;
-	
 	@Autowired 
 	private UserProfileService userProfileService;
 	
@@ -147,7 +142,12 @@ public class UserProfileController {
 	
 	@RequestMapping("/showRecommendationForm")
 	public String showRecommendationsForm(Model model) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserProfileFormData userProfileDTO = userProfileService.retrieveProfile(username);
+		
 		RecommendationFormData recommendationDTO = new RecommendationFormData();
+		recommendationDTO.setAuthors(userProfileDTO.getFavouriteBookAuthors());
+		recommendationDTO.setCategories(userProfileDTO.getFavouriteBookCategories());
 		
 		model.addAttribute("recommendationDTO", recommendationDTO);
 		return "user/recommendations-form";
@@ -155,26 +155,49 @@ public class UserProfileController {
 	
 	@RequestMapping("/recommendBooks")
 	public String recommendBooks(@ModelAttribute("recommendationDTO") RecommendationFormData recomFormData, Model model) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		List<BookFormData> bookResults = userProfileService.recommendBooks(username, recomFormData);
+		model.addAttribute("bookResults", bookResults);
+		return "/user/list-recommend-results";
+	}
+	
+	@RequestMapping("/requestBook")
+	public String requestBook(@RequestParam("bookId") int bookId, Model model) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		userProfileService.requestBook(bookId, username);
+		model.addAttribute("bookId", bookId);
 		return "redirect:/user/dashboard";
 	}
 	
-	public String requestBook(int bookId, Model model) {
-		return null;
-	}
-	
+	@RequestMapping("/showUserBookRequests")
 	public String showUserBookRequests(Model model) {
-		return null;
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		List<BookFormData> bookRequestsDTO = userProfileService.retrieveBookRequests(username);
+				
+		model.addAttribute("bookRequestsDTO", bookRequestsDTO);
+		return "user/show-user-requests";
 	}
 	
-	public String showRequestingUsersForBookOffer(int bookId, Model model) {
-		return null;
+	@RequestMapping("/showRequestingUsersForBookOffer")
+	public String showRequestingUsersForBookOffer(@RequestParam("bookId") int bookId, Model model) {
+		List<UserProfileFormData> userProfilesDTO = userProfileService.retrieveRequestingUsers(bookId);
+		model.addAttribute("userProfilesDTO", userProfilesDTO);
+		model.addAttribute("bookId", bookId);
+		return "user/show-requesting-users";
 	}
 	
-	public String acceptRequest(String username, int bookld, Model model) {
-		return username;
+	@RequestMapping("/acceptRequest")
+	public String acceptRequest(@RequestParam("username") String username, @RequestParam("bookId") int bookId, Model model) {
+		userProfileService.deleteBookRequest(username, bookId);
+		return "redirect:/user/dashboard";
 	}
 	
-	public String deleteBookRequest(String username, int bookId, Model model) {
-		return username;
+	@RequestMapping("/deleteBookRequest")
+	public String deleteBookRequest(String username, @RequestParam("bookId") int bookId, Model model) {
+		username = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		userProfileService.deleteBookRequest(username, bookId);
+		return "redirect:/user/showUserBookRequests";
 	}
 }

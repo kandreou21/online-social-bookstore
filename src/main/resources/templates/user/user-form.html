@@ -39,6 +39,8 @@
 			<input type="text" th:field="*{phonenumber}"
 					class="form-control mb-4 col-4" placeholder="Phone Number" required>	
 			
+			<input type="hidden" th:field="*{bookOffers}" />
+			
 			<input type="text" name="bookCategories" 
 					class="form-control mb-4 col-4" placeholder="Favourite Book Categories(comma-separated)" required />
    			
@@ -49,6 +51,7 @@
 		</form>
 	
 		<hr>
+			<a th:href="@{/user/dashboard}">Back to dashboard</a> 
 		
 	</div>
 </body>

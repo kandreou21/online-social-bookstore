@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-	<title>Recommendations</title>
+	<title>Recommend Book Offers</title>
 </head>
 
 <body>
@@ -19,36 +19,28 @@
 		<h3>User Directory</h3>
 		<hr>
 		
-		<p class="h4 mb-4">Recommend</p>
+		<p class="h4 mb-4">Recommend Books</p>
 	
 		<form action="#" th:action="@{/user/recommendBooks}"
 						 th:object="${recommendationDTO}" method="POST">
-		
-			<!-- Add hidden form field to handle update -->
-			<input type="hidden" th:field="*{username}" />
 			
-			<input type="text" th:field="*{fullName}"
-					class="form-control mb-4 col-4" placeholder="Fullname" required>
-					
-			<input type="text" th:field="*{age}"
-					class="form-control mb-4 col-4" placeholder="Age" required>
+			<input type="hidden" th:field="*{authors}" />
+			
+			<input type="hidden" th:field="*{categories}" />
+						 
+			<!-- Dropdown menu for selecting search strategy -->
+    		<select th:field="*{recommendationStrategy}" class="form-control mb-4 col-4" required>
+       	 		<option value="">Select Search Strategy</option>
+        		<option value="authors">Favourite Authors</option>
+        		<option value="categories">Favourite Categories</option>
+        		<option value="composite">Composite</option>
+    		</select>
 
-			<input type="text" th:field="*{address}"
-					class="form-control mb-4 col-4" placeholder="Address" required>
-					
-			<input type="text" th:field="*{phonenumber}"
-					class="form-control mb-4 col-4" placeholder="Phone Number" required>	
-			
-			<input type="text" name="bookCategories" 
-					class="form-control mb-4 col-4" placeholder="Favourite Book Categories(comma-separated)" required />
-   			
-   			<input type="text" name="bookAuthors" 
-   					class="form-control mb-4 col-4" placeholder="Favourite Book Authors(comma-separated)" required />
-			
 			<button type="submit" class="btn btn-info col-2">Recommend</button>
 		</form>
 	
 		<hr>
+		<a th:href="@{/user/dashboard}">Back to dashboard</a>
 		
 	</div>
 </body>

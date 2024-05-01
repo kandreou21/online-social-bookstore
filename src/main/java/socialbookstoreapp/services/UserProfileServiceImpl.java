@@ -2,7 +2,6 @@ package socialbookstoreapp.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -186,26 +185,42 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 	@Override
 	public List<BookFormData> recommendBooks(String username, RecommendationFormData recomFormData) {
-		// TODO Auto-generated method stub
-		return null;
+		RecommendationStrategy recommendationStrategy = recommendationStrategyFactory.getRecommendationStrategy(recomFormData.getRecommendationStrategy());
+		return recommendationStrategy.recommend(username, recomFormData);
 	}
 
 	@Override
-	public void requestBook(int bookid, String username) {
-		// TODO Auto-generated method stub
-		
+	public void requestBook(int bookId, String username) {
+		UserProfile userProfile = userProfileMapper.findByUsername(username);
+		Book book = bookMapper.findById(bookId).get();
+		if (!userProfile.getRequestedBooks().contains(book)) {
+			userProfile.addRequest(book);
+			userProfileMapper.save(userProfile);
+		}
 	}
 
 	@Override
 	public List<BookFormData> retrieveBookRequests(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Book> bookRequests = userProfileMapper.findByUsername(username).getRequestedBooks();
+		
+		List<BookFormData> bookRequestsDTO = new ArrayList<>();
+	    for (Book book: bookRequests) {
+	        BookFormData bookFormData = convertToBookFormData(book);
+	        bookRequestsDTO.add(bookFormData);
+	    }
+		return bookRequestsDTO;
 	}
 
 	@Override
 	public List<UserProfileFormData> retrieveRequestingUsers(int bookld) {
-		// TODO Auto-generated method stub
-		return null;
+		List<UserProfileFormData> userProfilesDTO = new ArrayList<UserProfileFormData>();
+		
+		List<UserProfile> userProfiles = bookMapper.findById(bookld).get().getRequestingUsers();
+		for (UserProfile userProfile: userProfiles) {
+			UserProfileFormData userProfileFormData = retrieveProfile(userProfile.getUsername());
+			userProfilesDTO.add(userProfileFormData);
+		}
+		return userProfilesDTO;
 	}
 
 	@Override
@@ -214,9 +229,10 @@ public class UserProfileServiceImpl implements UserProfileService {
 	}
 
 	@Override
-	public void deleteBookRequest(String username, int bookld) {
-		// TODO Auto-generated method stub
-		
+	public void deleteBookRequest(String username, int bookId) {
+		Book book = bookMapper.findById(bookId).get();
+		UserProfile userProfile = userProfileMapper.findByUsername(username);
+		userProfile.deleteRequest(book);
+		userProfileMapper.save(userProfile);
 	}
-	
 }

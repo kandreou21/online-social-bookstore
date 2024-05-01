@@ -5,18 +5,21 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import socialbookstoreapp.formsdata.BookFormData;
+import socialbookstoreapp.domainmodel.Book;
+import socialbookstoreapp.domainmodel.BookAuthor;
 import socialbookstoreapp.formsdata.RecommendationFormData;
-import socialbookstoreapp.mappers.BookAuthorMapper;
-import socialbookstoreapp.mappers.BookMapper;
 
 @Component
 public class AuthorsRecommendationStrategy extends TemplateRecommendationStrategy {
-	
-	public List<BookFormData> recommend(RecommendationFormData recommendationDTO, BookAuthorMapper bookAuthorMapper ) {
-		List<BookFormData> recommendations = new ArrayList<BookFormData>();
 		
-		//bookAuthorMapper.findAllByName(recommendationDTO.getAuthors());
-		return recommendations;
+	@Override
+	protected List<Book> retrieveBooks(RecommendationFormData recommendationDTO) {
+		List<Book> books = new ArrayList<Book>();
+		
+		for (BookAuthor author: recommendationDTO.getAuthors()) {
+			BookAuthor bookAuthor = bookAuthorMapper.findByName(author.getName()); 
+			books.addAll(bookAuthor.getBooks());
+		}
+		return books;
 	}
 }

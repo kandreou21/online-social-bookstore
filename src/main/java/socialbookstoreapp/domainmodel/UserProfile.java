@@ -50,7 +50,7 @@ public class UserProfile {
 	@JoinColumn(name="user_profile_id")
 	private List<Book> bookOffers;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
 	@JoinTable(
 			name = "book_request", 
 			joinColumns = @JoinColumn(name="user_profile_id"), 
@@ -135,6 +135,14 @@ public class UserProfile {
 	
 	public void deleteBookOffer(Book bookOffer) {
 		bookOffers.remove(bookOffer);
+	}
+	
+	public void addRequest(Book book) {
+		requestedBooks.add(book);
+	}
+	
+	public void deleteRequest(Book book) {
+		requestedBooks.remove(book);
 	}
 	
 	@Override

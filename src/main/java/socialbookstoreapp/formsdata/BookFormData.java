@@ -1,6 +1,7 @@
 package socialbookstoreapp.formsdata;
 
 import java.util.List;
+import java.util.Objects;
 
 import socialbookstoreapp.domainmodel.BookAuthor;
 import socialbookstoreapp.domainmodel.BookCategory;
@@ -65,6 +66,19 @@ public class BookFormData {
 
 	public void setRequestingUsers(List<UserProfile> requestingUsers) {
 		this.requestingUsers = requestingUsers;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(bookId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		BookFormData other = (BookFormData) obj;
+		if (bookId != other.getBookId())
+			return false;
+		return true;
 	}
 
 	@Override

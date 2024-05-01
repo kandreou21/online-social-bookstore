@@ -2,12 +2,15 @@ package socialbookstoreapp.formsdata;
 
 import java.util.List;
 
+import socialbookstoreapp.domainmodel.BookAuthor;
+import socialbookstoreapp.domainmodel.BookCategory;
+
 public class RecommendationFormData {
+	private List<BookAuthor> authors;
+	
+	private List<BookCategory> categories;
+	
 	private String recommendationStrategy;
-	
-	private List<String> authors;
-	
-	private List<String> categories;
 
 	public String getRecommendationStrategy() {
 		return recommendationStrategy;
@@ -17,19 +20,19 @@ public class RecommendationFormData {
 		this.recommendationStrategy = recommendationStrategy;
 	}
 
-	public List<String> getAuthors() {
+	public List<BookAuthor> getAuthors() {
 		return authors;
 	}
 
-	public void setAuthors(List<String> authors) {
+	public void setAuthors(List<BookAuthor> authors) {
 		this.authors = authors;
 	}
 
-	public List<String> getCategories() {
+	public List<BookCategory> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<String> categories) {
+	public void setCategories(List<BookCategory> categories) {
 		this.categories = categories;
 	}
 }

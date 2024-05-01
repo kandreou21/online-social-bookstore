@@ -1,11 +1,11 @@
 package socialbookstoreapp.domainmodel;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +40,7 @@ public class Book {
 	@JoinColumn(name="book_category_id")
 	private BookCategory bookCategory;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="requestedBooks")
+	@ManyToMany(mappedBy="requestedBooks")
 	private List<UserProfile> requestingUsers;
 	
 	public int getBookId() {
@@ -90,10 +90,26 @@ public class Book {
 	public void setRequestingUsers(List<UserProfile> requestingUsers) {
 		this.requestingUsers = requestingUsers;
 	}
+	
+	public void addRequestingUser(UserProfile userProfile) {
+		requestingUsers.add(userProfile);
+	}
+	
+	public void deleteRequestingUser(UserProfile userProfile) {
+		requestingUsers.remove(userProfile);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(bookId);
+	}
 
 	@Override
-	public String toString() {
-		return "Book [bookId=" + bookId + ", title=" + title + ", bookAuthors=" + bookAuthors + ", bookCategory="
-				+ bookCategory + ", requestingUsers=" + requestingUsers + "]";
+	public boolean equals(Object obj) {
+		Book other = (Book) obj;
+		if (bookId != other.getBookId())
+			return false;
+		return true;
 	}
+
 }

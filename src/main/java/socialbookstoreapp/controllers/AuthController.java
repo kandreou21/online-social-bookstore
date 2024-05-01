@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import socialbookstoreapp.domainmodel.Role;
 import socialbookstoreapp.domainmodel.User;
-import socialbookstoreapp.domainmodel.UserProfile;
 import socialbookstoreapp.formsdata.UserProfileFormData;
 import socialbookstoreapp.services.UserProfileService;
 import socialbookstoreapp.services.UserService;

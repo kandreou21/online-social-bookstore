@@ -16,39 +16,33 @@
 
 <div class="container">
 
-	<h3>Search Results Directory</h3>
+	<h3>Requesting Users Directory</h3>
 	<hr>
 	
 	<table class="table table-bordered table-striped">
 		<thead class="thead-dark">
 			<tr>
-				<th>Title</th>
-				<th>Author(s)</th>
-				<th>Category</th>
-				<th>Summary</th>
+				<th>Fullname</th>
+				<th>Age</th>
+				<th>Address</th>
+				<th>Phone Number</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		
 		<tbody>
-			<tr th:each="tempBook : ${bookResults}">
+			<tr th:each="tempUserProfile : ${userProfilesDTO}">
 			
-				<td th:text="${tempBook.title}" />	
+				<td th:text="${tempUserProfile.fullName}" />	
+				<td th:text="${tempUserProfile.age}" />	
+				<td th:text="${tempUserProfile.address}" />	
+				<td th:text="${tempUserProfile.phonenumber}" />	
 				<td>
-	                <!-- Iterate over the list of authors -->
-	                <ul>
-	                    <li th:each="author : ${tempBook.bookAuthors}" th:text="${author.name}" />
-	                </ul>
-            	</td>
-				<td th:text="${tempBook.bookCategory.name}" />	
-				<td th:text="${tempBook.summary}" />	
-				
-				<td>
-					<!-- Add "Request" button/link -->			
-					<a th:href="@{/user/requestBook(bookId=${tempBook.bookId})}"
+					<!-- Add "Accept Request" button/link -->			
+					<a th:href="@{/user/acceptRequest(username=${tempUserProfile.username}, bookId=${bookId})}"
 					   class="btn btn-danger btn-sm"
-					   onclick="if (!(confirm('Are you sure you want to request this book?'))) return false">
-						Request
+					   onclick="if (!(confirm('Are you sure you want to accept this request?'))) return false">
+						Accept Request
 					</a>
 				</td>
 				
@@ -56,7 +50,7 @@
 		</tbody>		
 	</table>
 	<hr>
-		<a th:href="@{/user/showSearchForm}">Search Another Book</a> &nbsp;
+		<a th:href="@{/user/listBookOffers}">Back to Book Offers</a> &nbsp; &nbsp;
 		<a th:href="@{/user/dashboard}">Back to dashboard</a> 
 		
 		
