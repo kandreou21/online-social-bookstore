@@ -54,9 +54,7 @@ public class UserProfileController {
 	@RequestMapping("/saveProfile") 
 	public String saveProfile(@ModelAttribute("userProfileDTO") UserProfileFormData userProfileFormData, 
 								@RequestParam("bookCategories") String bookCategories,
-								@RequestParam("bookAuthors") String bookAuthors,
-								Model theModel) {
-			
+								@RequestParam("bookAuthors") String bookAuthors) {
 		List<BookCategory> favouriteBookCategories = new ArrayList<BookCategory>();
 		List<BookAuthor> favouriteBookAuthors = new ArrayList<BookAuthor>();
 		List<String> bookCategoriesList = Arrays.asList(bookCategories.split("\\s*,\\s*"));
@@ -98,8 +96,7 @@ public class UserProfileController {
 	
 	@RequestMapping("/saveOffer")
 	public String saveOffer(@ModelAttribute("bookDTO") BookFormData bookFormData, 
-							@RequestParam("authors") String authors,
-							Model model) {
+							@RequestParam("authors") String authors) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<BookAuthor> bookAuthors = new ArrayList<BookAuthor>();
 		List<String> bookAuthorsList = Arrays.asList(authors.split("\\s*,\\s*"));
@@ -115,8 +112,8 @@ public class UserProfileController {
 	}
 	
 	@RequestMapping("/deleteBookOffer")
-	public String deleteBookOffer(@RequestParam("bookId") int bookId, String username, Model model) {
-		username = SecurityContextHolder.getContext().getAuthentication().getName();
+	public String deleteBookOffer(@RequestParam("bookId") int bookId) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		userProfileService.deleteBookOffer(username, bookId);
 		return "redirect:/user/listBookOffers";
@@ -137,7 +134,7 @@ public class UserProfileController {
 		searchFormData.setBookAuthors(Arrays.asList(authors.split("\\s*,\\s*")));
 		List<BookFormData> bookResults = userProfileService.searchBooks(searchFormData);
 		model.addAttribute("bookResults", bookResults);
-		return "/user/list-search-results";
+		return "user/list-search-results";
 	}
 	
 	@RequestMapping("/showRecommendationForm")
@@ -158,7 +155,7 @@ public class UserProfileController {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<BookFormData> bookResults = userProfileService.recommendBooks(username, recomFormData);
 		model.addAttribute("bookResults", bookResults);
-		return "/user/list-recommend-results";
+		return "user/list-recommend-results";
 	}
 	
 	@RequestMapping("/requestBook")
@@ -189,13 +186,16 @@ public class UserProfileController {
 	
 	@RequestMapping("/acceptRequest")
 	public String acceptRequest(@RequestParam("username") String username, @RequestParam("bookId") int bookId, Model model) {
-		userProfileService.deleteBookRequest(username, bookId);
-		return "redirect:/user/dashboard";
+		userProfileService.removeRequests(bookId);
+		
+		UserProfileFormData userProfileDTO = userProfileService.retrieveProfile(username);
+		model.addAttribute("userProfileDTO", userProfileDTO);
+		return "user/show-contact-info";
 	}
 	
 	@RequestMapping("/deleteBookRequest")
-	public String deleteBookRequest(String username, @RequestParam("bookId") int bookId, Model model) {
-		username = SecurityContextHolder.getContext().getAuthentication().getName();
+	public String deleteBookRequest(@RequestParam("bookId") int bookId) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		userProfileService.deleteBookRequest(username, bookId);
 		return "redirect:/user/showUserBookRequests";

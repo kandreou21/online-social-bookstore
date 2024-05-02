@@ -40,16 +40,6 @@ public class UserProfileServiceImpl implements UserProfileService {
 	
 	@Autowired 
 	private RecommendationStrategyFactory recommendationStrategyFactory;
-	
-	private UserProfileFormData convertToDTO(UserProfile userProfile) {
-		UserProfileFormData userProfileDTO = new UserProfileFormData();
-        return userProfileDTO;
-    }
-
-    private UserProfile convertToEntity(UserProfileFormData userProfileFormData) {
-    	UserProfile userProfile = new UserProfile();
-    	return userProfile;
-    }
     
 	@Override
 	public UserProfileFormData retrieveProfile(String username) {
@@ -114,8 +104,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 	    userProfile.setFavouriteBookAuthors(favouriteAuthors);
 	    userProfile.setFavouriteBookCategories(favouriteCategories);
 	    userProfileMapper.save(userProfile);
-	}
-	
+	}	
 
 	@Override
 	public List<BookFormData> retrieveBookOffers(String username) {
@@ -145,9 +134,9 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public void addBookOffer(String username, BookFormData bookFormData) {
 		UserProfile userProfile = userProfileMapper.findByUsername(username);
 		List<BookAuthor> bookAuthors = new ArrayList<BookAuthor>();
-		for (BookAuthor author: bookFormData.getBookAuthors()) {
-	        BookAuthor existingAuthor = bookAuthorMapper.findByName(author.getName());
-	        if (existingAuthor == null) {
+		for (BookAuthor author: bookFormData.getBookAuthors()) {	
+	        BookAuthor existingAuthor = bookAuthorMapper.findByName(author.getName()); 
+	        if (existingAuthor == null) {	//checks if author already exists in database to not have duplicate entries
 	            bookAuthorMapper.save(author);
 	            bookAuthors.add(author);
 	        } else {
@@ -156,7 +145,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 	    }
 		bookFormData.setBookAuthors(bookAuthors);
 		BookCategory bookCategory = bookCategoryMapper.findByName(bookFormData.getBookCategory().getName());
-		if (bookCategory == null) {
+		if (bookCategory == null) {		//checks if category already exists in database to not have duplicate entries
 			bookCategoryMapper.save(bookFormData.getBookCategory());
 		} else {
 			bookFormData.setBookCategory(bookCategory);
@@ -224,10 +213,20 @@ public class UserProfileServiceImpl implements UserProfileService {
 	}
 
 	@Override
+	public void removeRequests(int bookId) {
+		List<UserProfile> userProfiles = bookMapper.findById(bookId).get().getRequestingUsers();
+		
+		for (UserProfile userProfile: userProfiles) {
+			deleteBookRequest(userProfile.getUsername(), bookId);
+		}
+	}
+	
+	@Override
 	public void deleteBookOffer(String username, int bookId) {
+		removeRequests(bookId); 
 		bookMapper.deleteById(bookId);
 	}
-
+	
 	@Override
 	public void deleteBookRequest(String username, int bookId) {
 		Book book = bookMapper.findById(bookId).get();

@@ -17,14 +17,14 @@ import javax.persistence.Table;
 @Table(name="user_profiles")
 public class UserProfile {
 	@Id
-	@Column(name="username")
+	@Column(name="user_name")
 	private String username;
 
 	@Column(name="fullname")
 	private String fullName;
 
 	@Column(name="age")
-	private String age;
+	private int age;
 	
 	@Column(name="address")
 	private String address;
@@ -55,7 +55,7 @@ public class UserProfile {
 			name = "book_request", 
 			joinColumns = @JoinColumn(name="user_profile_id"), 
 			inverseJoinColumns = @JoinColumn(name="book_id"))
-	private List<Book> requestedBooks; //biblia poy exei kanei o user request gia na parei
+	private List<Book> requestedBooks; //books that user has requested
 
 	public List<Book> getRequestedBooks() {
 		return requestedBooks;
@@ -81,11 +81,11 @@ public class UserProfile {
 		this.fullName = fullName;
 	}
 
-	public String getAge() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 
@@ -143,13 +143,5 @@ public class UserProfile {
 	
 	public void deleteRequest(Book book) {
 		requestedBooks.remove(book);
-	}
-	
-	@Override
-	public String toString() {
-		return "UserProfile [username=" + username + ", fullName=" + fullName + ", age=" + age + ", address=" + address
-				+ ", phonenumber=" + phonenumber + ", favouriteBookAuthors=" + favouriteBookAuthors
-				+ ", favouriteBookCategories=" + favouriteBookCategories + ", bookOffers=" + bookOffers
-				+ ", requestedBooks=" + requestedBooks + "]";
 	}
 }

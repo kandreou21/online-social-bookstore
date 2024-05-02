@@ -80,11 +80,4 @@ public class BookFormData {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "BookFormData [bookId=" + bookId + ", title=" + title + ", bookAuthors=" + bookAuthors
-				+ ", bookCategory=" + bookCategory + ", requestingUsers=" + requestingUsers + "]";
-	}
-
 }

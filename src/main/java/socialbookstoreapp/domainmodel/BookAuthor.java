@@ -47,5 +47,4 @@ public class BookAuthor {
 	public void setBooks(List<Book> books) {
 		this.books = books;
 	}
-
 }

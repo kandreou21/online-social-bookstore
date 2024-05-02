@@ -5,7 +5,7 @@ import java.util.List;
 public class SearchFormData {
 	private String bookTitle;
 	private List<String> bookAuthors;
-	private String searchStrategy; //Enum?
+	private String searchStrategy;
 	
 	public String getBookTitle() {
 		return bookTitle;

@@ -27,9 +27,9 @@ public abstract class TemplateRecommendationStrategy implements RecommendationSt
 	
 	public List<BookFormData> recommend(String username, RecommendationFormData recommendationDTO) {
 		UserProfile userProfile = userProfileMapper.findByUsername(username);
-		List<BookFormData> recommendations = new ArrayList<BookFormData>();
 		List<Book> books = retrieveBooks(recommendationDTO);
 		
+		List<BookFormData> recommendations = new ArrayList<BookFormData>();
 		for (Book book: books) {
 			if (!userProfile.getBookOffers().contains(book)){
 				BookFormData bookDTO = new BookFormData();

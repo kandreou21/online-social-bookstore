@@ -20,6 +20,7 @@ public interface UserProfileService {
 	public void requestBook(int bookId, String username);
 	public List<BookFormData> retrieveBookRequests(String username);
 	public List<UserProfileFormData> retrieveRequestingUsers(int bookld);
+	public void removeRequests(int bookId);
 	public void deleteBookOffer(String username, int bookId);
 	public void deleteBookRequest(String username, int bookld);
 }

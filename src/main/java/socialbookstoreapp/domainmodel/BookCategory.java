@@ -49,9 +49,4 @@ public class BookCategory {
 	public void setBooks(List<Book> books) {
 		this.books = books;
 	}
-
-	@Override
-	public String toString() {
-		return "BookCategory [categoryId=" + categoryId + ", name=" + name + ", books=" + books + "]";
-	}
 }
