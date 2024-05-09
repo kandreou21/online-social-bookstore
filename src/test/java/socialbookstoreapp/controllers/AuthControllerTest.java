@@ -77,7 +77,7 @@ public class AuthControllerTest {
 	@WithMockUser(value = "user")
 	@Test 
 	@Transactional
-	void testSaveUserReturnsPage() throws Exception {
+	void testRegisterUserReturnsPage() throws Exception {
 		User user = new User();
 	    user.setUsername("SUTuser");
 	    user.setPassword("SUTuser");
